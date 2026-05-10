@@ -1,0 +1,24 @@
+# Scaffold-only developer ergonomics.
+# Does not authorize or implement M0 runtime behavior.
+
+default_job = "scaffold"
+
+[jobs.scaffold]
+command = ["bash", "-lc", "scripts/quality-gate.sh --scaffold"]
+need_stdout = true
+
+[jobs.scaffold-json]
+command = ["bash", "-lc", "scripts/quality-gate.sh --scaffold --json"]
+need_stdout = true
+
+[jobs.check]
+command = ["cargo", "check", "--workspace", "--all-targets"]
+need_stdout = true
+
+[jobs.test]
+command = ["cargo", "test", "--workspace", "--all-targets"]
+need_stdout = true
+
+[jobs.clippy]
+command = ["cargo", "clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]
+need_stdout = true

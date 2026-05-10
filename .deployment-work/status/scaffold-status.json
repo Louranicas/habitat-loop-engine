@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-05-09T23:52:44Z",
+  "live_integrations_authorized": false,
+  "m0_authorized": false,
+  "manifest_entries": 134,
+  "manifest_sha256": "e4a1ed3b5c269d90eb0c974b297525d229a6e5d3e5450f5626f4c13e6c3c6020",
+  "quality_gate": "PASS",
+  "root": "/home/louranicas/claude-code-workspace/habitat-loop-engine",
+  "status": "scaffold-created",
+  "verified_utc": "2026-05-09T23:59:21Z"
+}

@@ -1,0 +1,3 @@
+name: scaffold-local-ci
+steps:
+  - scripts/quality-gate.sh --scaffold

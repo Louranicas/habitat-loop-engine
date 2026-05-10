@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "counter_evidence_locator": {
+      "type": "string"
+    },
+    "framework_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_sha256": {
+      "description": "Legacy alias retained for pre-split receipt readers; use framework_sha256 and manifest_sha256 for new scaffold receipts.",
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "verdict": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "verdict",
+    "manifest_sha256",
+    "framework_sha256",
+    "counter_evidence_locator"
+  ],
+  "title": "HLE Receipt",
+  "type": "object"
+}

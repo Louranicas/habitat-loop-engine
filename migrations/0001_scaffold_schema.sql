@@ -1,0 +1,1 @@
+-- Scaffold placeholder only. Real DB schema requires M0 authorization.

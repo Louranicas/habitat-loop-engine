@@ -1,0 +1,105 @@
+[project]
+name = "habitat-loop-engine"
+status = "scaffold-only"
+root = "/home/louranicas/claude-code-workspace/habitat-loop-engine"
+canonical_plan_file = "plan.toml"
+
+[authorization]
+scaffold = true
+m0_runtime = false
+live_integrations = false
+cron_daemons = false
+
+[quality]
+layers_exact = 7
+specs_exact = 13
+schematics_min = 11
+modules_min = 4
+anti_patterns_min = 8
+use_patterns_min = 6
+
+[[layers]]
+id = "L01"
+doc = "ai_docs/layers/L01_FOUNDATION.md"
+cluster = "HLE-C01"
+
+[[layers]]
+id = "L02"
+doc = "ai_docs/layers/L02_PERSISTENCE.md"
+cluster = "HLE-C02"
+
+[[layers]]
+id = "L03"
+doc = "ai_docs/layers/L03_WORKFLOW_EXECUTOR.md"
+cluster = "HLE-C03"
+
+[[layers]]
+id = "L04"
+doc = "ai_docs/layers/L04_VERIFICATION.md"
+cluster = "HLE-C04"
+
+[[layers]]
+id = "L05"
+doc = "ai_docs/layers/L05_DISPATCH_BRIDGES.md"
+cluster = "HLE-C05"
+
+[[layers]]
+id = "L06"
+doc = "ai_docs/layers/L06_CLI.md"
+cluster = "HLE-C06"
+
+[[layers]]
+id = "L07"
+doc = "ai_docs/layers/L07_RUNBOOK_SEMANTICS.md"
+cluster = "HLE-C07"
+
+[[modules]]
+id = "M001"
+name = "substrate-types"
+layer = "L01"
+crate = "crates/substrate-types"
+module_doc = "ai_docs/modules/M001_SUBSTRATE_TYPES.md"
+
+[[modules]]
+id = "M002"
+name = "substrate-verify"
+layer = "L04"
+crate = "crates/substrate-verify"
+module_doc = "ai_docs/modules/M002_SUBSTRATE_VERIFY.md"
+
+[[modules]]
+id = "M003"
+name = "substrate-emit"
+layer = "L03"
+crate = "crates/substrate-emit"
+module_doc = "ai_docs/modules/M003_SUBSTRATE_EMIT.md"
+
+[[modules]]
+id = "M004"
+name = "hle-cli"
+layer = "L06"
+crate = "crates/hle-cli"
+module_doc = "ai_docs/modules/M004_HLE_CLI.md"
+
+[scripts]
+verify_sync = "scripts/verify-sync.sh"
+quality_gate = "scripts/quality-gate.sh"
+doc_links = "scripts/verify-doc-links.sh"
+claude_folder = "scripts/verify-claude-folder.sh"
+anti_patterns = "scripts/verify-antipattern-registry.sh"
+semantic_predicates = "scripts/verify-semantic-predicates.sh"
+module_map = "scripts/verify-module-map.sh"
+layer_dag = "scripts/verify-layer-dag.sh"
+receipt_schema = "scripts/verify-receipt-schema.sh"
+negative_controls = "scripts/verify-negative-controls.sh"
+
+runbook_schema = "scripts/verify-runbook-schema.sh"
+receipt_graph = "scripts/verify-receipt-graph.sh"
+test_taxonomy = "scripts/verify-test-taxonomy.sh"
+bounded_logs = "scripts/verify-bounded-logs.sh"
+use_patterns = "scripts/verify-usepattern-registry.sh"
+skeleton_only = "scripts/verify-skeleton-only.sh"
+framework_hash_freshness = "scripts/verify-framework-hash-freshness.sh"
+vault_parity = "scripts/verify-vault-parity.sh"
+bin_wrapper_parity = "scripts/verify-bin-wrapper-parity.sh"
+script_safety = "scripts/verify-script-safety.sh"

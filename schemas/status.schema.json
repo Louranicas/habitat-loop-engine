@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "live_integrations_authorized": {
+      "type": "boolean"
+    },
+    "m0_authorized": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "m0_authorized",
+    "live_integrations_authorized"
+  ],
+  "title": "HLE Status",
+  "type": "object"
+}

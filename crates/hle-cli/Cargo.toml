@@ -1,0 +1,12 @@
+[package]
+name = "hle-cli"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[[bin]]
+name = "hle"
+path = "src/main.rs"
+
+[lints]
+workspace = true

@@ -1,0 +1,8 @@
+{
+  "layers_exact": 7,
+  "m0_authorized": false,
+  "modules_min": 4,
+  "project": "habitat-loop-engine",
+  "specs_exact": 13,
+  "status": "scaffold-only"
+}

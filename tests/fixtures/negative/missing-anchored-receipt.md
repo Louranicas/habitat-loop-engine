@@ -1,0 +1,3 @@
+# Bad Receipt
+
+Verdict: PASS

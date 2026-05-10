@@ -1,0 +1,29 @@
+[workspace]
+members = [
+  "crates/substrate-types",
+  "crates/substrate-verify",
+  "crates/substrate-emit",
+  "crates/hle-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "UNLICENSED"
+version = "0.0.0-scaffold"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+dbg_macro = "deny"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true

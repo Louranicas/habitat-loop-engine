@@ -1,0 +1,9 @@
+/target/
+/.deployment-work/scratch/
+/.deployment-work/logs/*.tmp
+/.claude/cache/
+*.pyc
+__pycache__/
+*.sqlite3
+*.db
+.env
