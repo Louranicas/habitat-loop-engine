@@ -1,0 +1,14 @@
+[package]
+name = "hle-executor"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+hle-core = { path = "../hle-core" }
+hle-storage = { path = "../hle-storage" }
+sha2 = "0.10"
+
+[lints]
+workspace = true

@@ -8,5 +8,14 @@ version.workspace = true
 name = "hle"
 path = "src/main.rs"
 
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+substrate-verify = { path = "../substrate-verify" }
+substrate-emit = { path = "../substrate-emit" }
+hle-core = { path = "../hle-core" }
+hle-executor = { path = "../hle-executor" }
+hle-verifier = { path = "../hle-verifier" }
+hle-storage = { path = "../hle-storage" }
+
 [lints]
 workspace = true

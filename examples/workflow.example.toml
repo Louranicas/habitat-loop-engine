@@ -1,2 +1,13 @@
-name = "example"
-status = "documentation-only"
+name = "m0-example"
+
+[[steps]]
+id = "authority"
+title = "true"
+desired_state = "passed"
+requires_human = false
+
+[[steps]]
+id = "handoff"
+title = "Await human handoff before external Habitat mutation"
+desired_state = "awaiting-human"
+requires_human = true

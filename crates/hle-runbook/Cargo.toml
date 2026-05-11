@@ -1,0 +1,18 @@
+[package]
+name = "hle-runbook"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[features]
+## Expose in-memory test helpers for use by integration test crates.
+test-utils = []
+
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+hle-core = { path = "../hle-core" }
+hle-storage = { path = "../hle-storage" }
+hle-executor = { path = "../hle-executor" }
+
+[lints]
+workspace = true

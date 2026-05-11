@@ -1,0 +1,16 @@
+[package]
+name = "hle-storage"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+hle-core = { path = "../hle-core" }
+rusqlite = { version = "0.31", features = ["bundled"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[lints]
+workspace = true

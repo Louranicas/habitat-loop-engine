@@ -10,8 +10,11 @@ CAP = 40
 violations: list[str] = []
 
 plan = (ROOT / 'plan.toml').read_text()
+if 'm0_runtime = true' in plan:
+    print('verify-skeleton-only SKIP: M0 runtime authorized')
+    raise SystemExit(0)
 if 'm0_runtime = false' not in plan:
-    raise SystemExit('skeleton-only LOC cap requires plan.toml m0_runtime = false')
+    raise SystemExit('skeleton-only LOC cap requires explicit m0_runtime flag')
 
 for path in sorted((ROOT / 'crates').rglob('*.rs')):
     lines = path.read_text().splitlines()

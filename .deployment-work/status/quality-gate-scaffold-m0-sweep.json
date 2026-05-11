@@ -1,0 +1,170 @@
+{
+  "tool": "scripts/quality-gate.sh",
+  "mode": "scaffold",
+  "schema": "hle.quality_gate.v2",
+  "verdict": "PASS",
+  "steps": [
+    {
+      "command": "scripts/verify-sync.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-doc-links.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 31
+    },
+    {
+      "command": "scripts/verify-claude-folder.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 23
+    },
+    {
+      "command": "scripts/verify-antipattern-registry.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 4
+    },
+    {
+      "command": "scripts/verify-semantic-predicates.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-module-map.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 8
+    },
+    {
+      "command": "scripts/verify-layer-dag.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 8
+    },
+    {
+      "command": "scripts/verify-receipt-schema.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-negative-controls.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-runbook-schema.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 3
+    },
+    {
+      "command": "scripts/verify-receipt-graph.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-test-taxonomy.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 2
+    },
+    {
+      "command": "scripts/verify-bounded-logs.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-usepattern-registry.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 3
+    },
+    {
+      "command": "scripts/verify-skeleton-only.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-framework-hash-freshness.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 21
+    },
+    {
+      "command": "scripts/verify-vault-parity.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-bin-wrapper-parity.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-script-safety.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 29
+    },
+    {
+      "command": "scripts/verify-local-loop-helpers.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-source-topology.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "cargo fmt --check",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 188
+    },
+    {
+      "command": "cargo check --workspace --all-targets",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 611
+    },
+    {
+      "command": "cargo test --workspace --all-targets",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 1247
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 708
+    },
+    {
+      "command": "python3 tests/unit/test_manifest.py",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 30
+    },
+    {
+      "command": "python3 tests/integration/test_scaffold.py",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 183
+    }
+  ]
+}

@@ -1,11 +1,16 @@
 {
   "created_utc": "2026-05-09T23:52:44Z",
-  "last_scaffold_doc_completion_utc": "2026-05-10T02:05:54Z",
+  "last_scaffold_doc_completion_utc": "2026-05-10T11:50:00Z",
   "live_integrations_authorized": false,
-  "m0_authorized": false,
-  "manifest_entries": 158,
+  "cron_daemons_authorized": false,
+  "m0_authorized": true,
+  "manifest_entries": 167,
   "quality_gate": "PASS",
+  "quality_gate_modes": [
+    "scaffold",
+    "m0"
+  ],
   "root": "/home/louranicas/claude-code-workspace/habitat-loop-engine",
-  "status": "scaffold-docs-completed-m0-waiting",
-  "verified_utc": "2026-05-10T02:05:54Z"
+  "status": "local-m0-broadened-live-integrations-blocked",
+  "verified_utc": "2026-05-10T11:28:40Z"
 }

@@ -3,17 +3,19 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 json=false
-scaffold=false
+mode=""
 for arg in "$@"; do
   case "$arg" in
-    --scaffold) scaffold=true ;;
+    --scaffold) mode="scaffold" ;;
+    --m0) mode="m0" ;;
+    --full) mode="full" ;;
     --json) json=true ;;
-    *) echo 'usage: scripts/quality-gate.sh --scaffold [--json]' >&2; exit 2 ;;
+    *) echo 'usage: scripts/quality-gate.sh (--scaffold|--m0|--full) [--json]' >&2; exit 2 ;;
   esac
 done
 
-if [ "$scaffold" != true ]; then
-  echo 'usage: scripts/quality-gate.sh --scaffold [--json]' >&2
+if [ -z "$mode" ]; then
+  echo 'usage: scripts/quality-gate.sh (--scaffold|--m0|--full) [--json]' >&2
   exit 2
 fi
 
@@ -37,6 +39,30 @@ steps=(
   'scripts/verify-vault-parity.sh'
   'scripts/verify-bin-wrapper-parity.sh'
   'scripts/verify-script-safety.sh'
+  'scripts/verify-local-loop-helpers.sh'
+  'scripts/verify-source-topology.sh'
+)
+
+if [ "$mode" = "m0" ] || [ "$mode" = "full" ]; then
+  m0_gate_dir="${TMPDIR:-/tmp}/hle-m0-quality-gate-$$"
+  mkdir -p "$m0_gate_dir"
+  trap 'find "$m0_gate_dir" -type f -delete 2>/dev/null; rmdir "$m0_gate_dir" 2>/dev/null || true' EXIT
+  steps+=(
+    'scripts/verify-m0-runtime.sh'
+    'cargo run -q -p hle-cli -- --version'
+    "cargo run -q -p hle-cli -- run --workflow examples/workflow.example.toml --ledger $m0_gate_dir/m0-example-ledger.jsonl"
+    "cargo run -q -p hle-cli -- verify --ledger $m0_gate_dir/m0-example-ledger.jsonl"
+    "cargo run -q -p hle-cli -- daemon --once --workflow examples/workflow.example.toml --ledger $m0_gate_dir/m0-daemon-ledger.jsonl"
+  )
+fi
+
+if [ "$mode" = "full" ]; then
+  steps+=(
+    'scripts/verify-source-topology.sh --strict'
+  )
+fi
+
+steps+=(
   'cargo fmt --check'
   'cargo check --workspace --all-targets'
   'cargo test --workspace --all-targets'
@@ -46,43 +72,18 @@ steps=(
 )
 
 if [ "$json" = true ]; then
-  python3 - <<'PY'
+  python3 - "$mode" "${steps[@]}" <<'PY'
 import json
 import subprocess
 import sys
 import time
 
-steps = [
-    'scripts/verify-sync.sh',
-    'scripts/verify-doc-links.sh',
-    'scripts/verify-claude-folder.sh',
-    'scripts/verify-antipattern-registry.sh',
-    'scripts/verify-semantic-predicates.sh',
-    'scripts/verify-module-map.sh',
-    'scripts/verify-layer-dag.sh',
-    'scripts/verify-receipt-schema.sh',
-    'scripts/verify-negative-controls.sh',
-    'scripts/verify-runbook-schema.sh',
-    'scripts/verify-receipt-graph.sh',
-    'scripts/verify-test-taxonomy.sh',
-    'scripts/verify-bounded-logs.sh',
-    'scripts/verify-usepattern-registry.sh',
-    'scripts/verify-skeleton-only.sh',
-    'scripts/verify-framework-hash-freshness.sh',
-    'scripts/verify-vault-parity.sh',
-    'scripts/verify-bin-wrapper-parity.sh',
-    'scripts/verify-script-safety.sh',
-    'cargo fmt --check',
-    'cargo check --workspace --all-targets',
-    'cargo test --workspace --all-targets',
-    'cargo clippy --workspace --all-targets -- -D warnings',
-    'python3 tests/unit/test_manifest.py',
-    'python3 tests/integration/test_scaffold.py',
-]
+mode = sys.argv[1]
+steps = sys.argv[2:]
 report = {
     'tool': 'scripts/quality-gate.sh',
-    'mode': 'scaffold',
-    'schema': 'hle.quality_gate.v1',
+    'mode': mode,
+    'schema': 'hle.quality_gate.v2',
     'verdict': 'PASS',
     'steps': [],
 }
@@ -114,5 +115,5 @@ else
   for command in "${steps[@]}"; do
     bash -o pipefail -c "$command"
   done
-  printf 'quality-gate --scaffold PASS\n'
+  printf 'quality-gate --%s PASS\n' "$mode"
 fi

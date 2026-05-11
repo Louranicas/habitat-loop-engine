@@ -1,12 +1,12 @@
 [project]
 name = "habitat-loop-engine"
-status = "scaffold-only"
+status = "m0-runtime"
 root = "/home/louranicas/claude-code-workspace/habitat-loop-engine"
 canonical_plan_file = "plan.toml"
 
 [authorization]
 scaffold = true
-m0_runtime = false
+m0_runtime = true
 live_integrations = false
 cron_daemons = false
 
@@ -14,7 +14,12 @@ cron_daemons = false
 layers_exact = 7
 specs_exact = 13
 schematics_min = 11
-modules_min = 4
+modules_min = 50
+current_m0_modules = 4
+framework_module_target = 50
+framework_rust_module_target = 46
+framework_ops_surface_target = 4
+source_topology_gate = "scripts/verify-source-topology.sh"
 anti_patterns_min = 8
 use_patterns_min = 6
 
@@ -103,3 +108,482 @@ framework_hash_freshness = "scripts/verify-framework-hash-freshness.sh"
 vault_parity = "scripts/verify-vault-parity.sh"
 bin_wrapper_parity = "scripts/verify-bin-wrapper-parity.sh"
 script_safety = "scripts/verify-script-safety.sh"
+local_loop_helpers = "scripts/verify-local-loop-helpers.sh"
+m0_runtime = "scripts/verify-m0-runtime.sh"
+source_topology = "scripts/verify-source-topology.sh"
+
+[full_codebase]
+status = "planned_topology_incomplete"
+layers_exact = 7
+module_surfaces_exact = 50
+rust_modules_exact = 46
+ops_surfaces_exact = 4
+cluster_count = 9
+cluster_manifest = "ai_docs/CLUSTERED_MODULES.md"
+code_module_map = "ai_docs/CODE_MODULE_MAP.md"
+strict_gate = "scripts/verify-source-topology.sh --strict"
+fleet_mode = "claude-code-arena-style"
+
+[[full_codebase_clusters]]
+id = "C01_EVIDENCE_INTEGRITY"
+name = "Evidence Integrity"
+layers = "L01/L02/L04"
+module_surfaces = 5
+synergy = "receipt hash -> claim store -> receipt store -> verifier recompute -> final claim evaluator"
+
+[[full_codebase_clusters]]
+id = "C02_AUTHORITY_STATE"
+name = "Authority and State"
+layers = "L01/L03/L04"
+module_surfaces = 5
+synergy = "type-state authority and transition table prevent executor self-certification"
+
+[[full_codebase_clusters]]
+id = "C03_BOUNDED_EXECUTION"
+name = "Bounded Execution"
+layers = "L03"
+module_surfaces = 5
+synergy = "local runner + phase executor + timeout/retry policies make every runtime path finite and verifier-visible"
+
+[[full_codebase_clusters]]
+id = "C04_ANTI_PATTERN_INTELLIGENCE"
+name = "Anti-Pattern Intelligence"
+layers = "L01/L02/L04"
+module_surfaces = 5
+synergy = "catalogued anti-patterns become scanner events, test taxonomy checks, and false-pass audits"
+
+[[full_codebase_clusters]]
+id = "C05_PERSISTENCE_LEDGER"
+name = "Persistence Ledger"
+layers = "L02"
+module_surfaces = 7
+synergy = "schema-first ledger ties runs, ticks, evidence, verifier results, and blockers into append-only proof"
+
+[[full_codebase_clusters]]
+id = "C06_RUNBOOK_SEMANTICS"
+name = "Runbook Semantics"
+layers = "L07"
+module_surfaces = 8
+synergy = "incident-response runbooks reuse workflow authority instead of becoming a parallel engine"
+
+[[full_codebase_clusters]]
+id = "C07_DISPATCH_BRIDGES"
+name = "Dispatch Bridges"
+layers = "L05"
+module_surfaces = 6
+synergy = "Zellij/Atuin/DevOps/STcortex/Watcher bridges share contract parity and read-only/live-write gates"
+
+[[full_codebase_clusters]]
+id = "C08_CLI_SURFACE"
+name = "CLI Surface"
+layers = "L06"
+module_surfaces = 5
+synergy = "operator commands remain thin typed adapters over executor/verifier/runbook authority"
+
+[[full_codebase_clusters]]
+id = "C09_DEVOPS_QI_OPERATIONAL_LANE"
+name = "DevOps/QI Operational Lane"
+layers = "L06/scripts"
+module_surfaces = 4
+synergy = "scripts enforce docs-source-gate parity and prevent quiet topology collapse"
+
+[[planned_modules]]
+id = "M005"
+name = "receipt_hash"
+layer = "L01"
+cluster = "C01_EVIDENCE_INTEGRITY"
+source_path = "crates/hle-core/src/evidence/receipt_hash.rs"
+synergy_role = "canonical receipt hashing; source of all proof identity"
+
+[[planned_modules]]
+id = "M006"
+name = "claims_store"
+layer = "L01"
+cluster = "C01_EVIDENCE_INTEGRITY"
+source_path = "crates/hle-core/src/evidence/claims_store.rs"
+synergy_role = "claim graph store with provisional/verified/final state anchors"
+
+[[planned_modules]]
+id = "M007"
+name = "receipts_store"
+layer = "L02"
+cluster = "C01_EVIDENCE_INTEGRITY"
+source_path = "crates/hle-storage/src/receipts_store.rs"
+synergy_role = "append-only receipt persistence"
+
+[[planned_modules]]
+id = "M008"
+name = "receipt_sha_verifier"
+layer = "L04"
+cluster = "C01_EVIDENCE_INTEGRITY"
+source_path = "crates/hle-verifier/src/receipt_sha_verifier.rs"
+synergy_role = "independent verifier recomputes receipt hashes"
+
+[[planned_modules]]
+id = "M009"
+name = "final_claim_evaluator"
+layer = "L04"
+cluster = "C01_EVIDENCE_INTEGRITY"
+source_path = "crates/hle-verifier/src/final_claim_evaluator.rs"
+synergy_role = "only verifier can promote final claims"
+
+[[planned_modules]]
+id = "M010"
+name = "claim_authority"
+layer = "L01"
+cluster = "C02_AUTHORITY_STATE"
+source_path = "crates/hle-core/src/authority/claim_authority.rs"
+synergy_role = "type-state authority model"
+
+[[planned_modules]]
+id = "M011"
+name = "workflow_state"
+layer = "L01"
+cluster = "C02_AUTHORITY_STATE"
+source_path = "crates/hle-core/src/state/workflow_state.rs"
+synergy_role = "workflow state enum and invariants"
+
+[[planned_modules]]
+id = "M012"
+name = "state_machine"
+layer = "L03"
+cluster = "C02_AUTHORITY_STATE"
+source_path = "crates/hle-executor/src/state_machine.rs"
+synergy_role = "transition executor with verifier-visible events"
+
+[[planned_modules]]
+id = "M013"
+name = "status_transitions"
+layer = "L03"
+cluster = "C02_AUTHORITY_STATE"
+source_path = "crates/hle-executor/src/status_transitions.rs"
+synergy_role = "transition table and rollback affordances"
+
+[[planned_modules]]
+id = "M014"
+name = "claim_authority_verifier"
+layer = "L04"
+cluster = "C02_AUTHORITY_STATE"
+source_path = "crates/hle-verifier/src/claim_authority_verifier.rs"
+synergy_role = "adversarial check against executor self-certification"
+
+[[planned_modules]]
+id = "M015"
+name = "bounded"
+layer = "L03"
+cluster = "C03_BOUNDED_EXECUTION"
+source_path = "crates/hle-executor/src/bounded.rs"
+synergy_role = "bounded output/time/memory primitives"
+
+[[planned_modules]]
+id = "M016"
+name = "local_runner"
+layer = "L03"
+cluster = "C03_BOUNDED_EXECUTION"
+source_path = "crates/hle-executor/src/local_runner.rs"
+synergy_role = "one-shot local command runner"
+
+[[planned_modules]]
+id = "M017"
+name = "phase_executor"
+layer = "L03"
+cluster = "C03_BOUNDED_EXECUTION"
+source_path = "crates/hle-executor/src/phase_executor.rs"
+synergy_role = "phase-aware step execution"
+
+[[planned_modules]]
+id = "M018"
+name = "timeout_policy"
+layer = "L03"
+cluster = "C03_BOUNDED_EXECUTION"
+source_path = "crates/hle-executor/src/timeout_policy.rs"
+synergy_role = "TERM to KILL bounded timeout policy"
+
+[[planned_modules]]
+id = "M019"
+name = "retry_policy"
+layer = "L03"
+cluster = "C03_BOUNDED_EXECUTION"
+source_path = "crates/hle-executor/src/retry_policy.rs"
+synergy_role = "explicit bounded retry semantics"
+
+[[planned_modules]]
+id = "M020"
+name = "anti_pattern_scanner"
+layer = "L04"
+cluster = "C04_ANTI_PATTERN_INTELLIGENCE"
+source_path = "crates/hle-verifier/src/anti_pattern_scanner.rs"
+synergy_role = "turns anti-pattern catalog into executable checks"
+
+[[planned_modules]]
+id = "M021"
+name = "anti_pattern_events"
+layer = "L02"
+cluster = "C04_ANTI_PATTERN_INTELLIGENCE"
+source_path = "crates/hle-storage/src/anti_pattern_events.rs"
+synergy_role = "stores scanner events and evidence"
+
+[[planned_modules]]
+id = "M022"
+name = "test_taxonomy"
+layer = "L01"
+cluster = "C04_ANTI_PATTERN_INTELLIGENCE"
+source_path = "crates/hle-core/src/testing/test_taxonomy.rs"
+synergy_role = "behavioral test taxonomy model"
+
+[[planned_modules]]
+id = "M023"
+name = "test_taxonomy_verifier"
+layer = "L04"
+cluster = "C04_ANTI_PATTERN_INTELLIGENCE"
+source_path = "crates/hle-verifier/src/test_taxonomy_verifier.rs"
+synergy_role = "rejects inflated/vacuous tests"
+
+[[planned_modules]]
+id = "M024"
+name = "false_pass_auditor"
+layer = "L04"
+cluster = "C04_ANTI_PATTERN_INTELLIGENCE"
+source_path = "crates/hle-verifier/src/false_pass_auditor.rs"
+synergy_role = "catches PASS claims without authority evidence"
+
+[[planned_modules]]
+id = "M025"
+name = "pool"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/pool.rs"
+synergy_role = "local database pool and connection discipline"
+
+[[planned_modules]]
+id = "M026"
+name = "migrations"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/migrations.rs"
+synergy_role = "schema-first migration runner"
+
+[[planned_modules]]
+id = "M027"
+name = "workflow_runs"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/workflow_runs.rs"
+synergy_role = "workflow run table abstraction"
+
+[[planned_modules]]
+id = "M028"
+name = "workflow_ticks"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/workflow_ticks.rs"
+synergy_role = "tick ledger for freshness and causality"
+
+[[planned_modules]]
+id = "M029"
+name = "evidence_store"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/evidence_store.rs"
+synergy_role = "bounded evidence blob/index store"
+
+[[planned_modules]]
+id = "M030"
+name = "verifier_results_store"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/verifier_results_store.rs"
+synergy_role = "verifier result ledger"
+
+[[planned_modules]]
+id = "M031"
+name = "blockers_store"
+layer = "L02"
+cluster = "C05_PERSISTENCE_LEDGER"
+source_path = "crates/hle-storage/src/blockers_store.rs"
+synergy_role = "blocked/awaiting-human state persistence"
+
+[[planned_modules]]
+id = "M032"
+name = "runbook_schema"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/schema.rs"
+synergy_role = "typed runbook workflow definition schema"
+
+[[planned_modules]]
+id = "M033"
+name = "runbook_parser"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/parser.rs"
+synergy_role = "parse and validate runbooks"
+
+[[planned_modules]]
+id = "M034"
+name = "runbook_phase_map"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/phase_map.rs"
+synergy_role = "map runbook phases onto executor phases"
+
+[[planned_modules]]
+id = "M035"
+name = "runbook_human_confirm"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/human_confirm.rs"
+synergy_role = "AwaitingHuman semantics"
+
+[[planned_modules]]
+id = "M036"
+name = "runbook_manual_evidence"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/manual_evidence.rs"
+synergy_role = "manual evidence attachment model"
+
+[[planned_modules]]
+id = "M037"
+name = "runbook_scaffold"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/scaffold.rs"
+synergy_role = "generate incident runbook scaffolds"
+
+[[planned_modules]]
+id = "M038"
+name = "runbook_incident_replay"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/incident_replay.rs"
+synergy_role = "deterministic replay fixtures"
+
+[[planned_modules]]
+id = "M039"
+name = "runbook_safety_policy"
+layer = "L07"
+cluster = "C06_RUNBOOK_SEMANTICS"
+source_path = "crates/hle-runbook/src/safety_policy.rs"
+synergy_role = "runbook safety gate and policy"
+
+[[planned_modules]]
+id = "M040"
+name = "bridge_contract"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/bridge_contract.rs"
+synergy_role = "bridge schema/port/path contract model"
+
+[[planned_modules]]
+id = "M041"
+name = "zellij_dispatch"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/zellij_dispatch.rs"
+synergy_role = "zellij pane dispatch packet adapter"
+
+[[planned_modules]]
+id = "M042"
+name = "atuin_qi_bridge"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/atuin_qi_bridge.rs"
+synergy_role = "Atuin QI script chain integration"
+
+[[planned_modules]]
+id = "M043"
+name = "devops_v3_probe"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/devops_v3_probe.rs"
+synergy_role = "read-only DevOps V3 probe surface"
+
+[[planned_modules]]
+id = "M044"
+name = "stcortex_anchor_bridge"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/stcortex_anchor_bridge.rs"
+synergy_role = "future gated STcortex anchor/write adapter; read-only until authorized"
+
+[[planned_modules]]
+id = "M045"
+name = "watcher_notice_writer"
+layer = "L05"
+cluster = "C07_DISPATCH_BRIDGES"
+source_path = "crates/hle-bridge/src/watcher_notice_writer.rs"
+synergy_role = "Watcher/Hermes notification receipt writer"
+
+[[planned_modules]]
+id = "M046"
+name = "cli_args"
+layer = "L06"
+cluster = "C08_CLI_SURFACE"
+source_path = "crates/hle-cli/src/args.rs"
+synergy_role = "typed CLI argument parser"
+
+[[planned_modules]]
+id = "M047"
+name = "cli_run"
+layer = "L06"
+cluster = "C08_CLI_SURFACE"
+source_path = "crates/hle-cli/src/run.rs"
+synergy_role = "hle run command"
+
+[[planned_modules]]
+id = "M048"
+name = "cli_verify"
+layer = "L06"
+cluster = "C08_CLI_SURFACE"
+source_path = "crates/hle-cli/src/verify.rs"
+synergy_role = "hle verify command"
+
+[[planned_modules]]
+id = "M049"
+name = "cli_daemon_once"
+layer = "L06"
+cluster = "C08_CLI_SURFACE"
+source_path = "crates/hle-cli/src/daemon_once.rs"
+synergy_role = "bounded daemon --once command"
+
+[[planned_modules]]
+id = "M050"
+name = "cli_status"
+layer = "L06"
+cluster = "C08_CLI_SURFACE"
+source_path = "crates/hle-cli/src/status.rs"
+synergy_role = "status and topology report command"
+
+[[planned_modules]]
+id = "M051"
+name = "verify_sync_script"
+layer = "L06"
+cluster = "C09_DEVOPS_QI_OPERATIONAL_LANE"
+source_path = "scripts/verify-sync.sh"
+synergy_role = "operational verifier script surface"
+
+[[planned_modules]]
+id = "M052"
+name = "quality_gate_script"
+layer = "L06"
+cluster = "C09_DEVOPS_QI_OPERATIONAL_LANE"
+source_path = "scripts/quality-gate.sh"
+synergy_role = "quality gate orchestrator script"
+
+[[planned_modules]]
+id = "M053"
+name = "module_map_script"
+layer = "L06"
+cluster = "C09_DEVOPS_QI_OPERATIONAL_LANE"
+source_path = "scripts/verify-module-map.sh"
+synergy_role = "module-map consistency verifier"
+
+[[planned_modules]]
+id = "M054"
+name = "layer_dag_script"
+layer = "L06"
+cluster = "C09_DEVOPS_QI_OPERATIONAL_LANE"
+source_path = "scripts/verify-layer-dag.sh"
+synergy_role = "layer DAG consistency verifier"
+

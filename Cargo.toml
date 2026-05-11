@@ -4,6 +4,12 @@ members = [
   "crates/substrate-verify",
   "crates/substrate-emit",
   "crates/hle-cli",
+  "crates/hle-core",
+  "crates/hle-storage",
+  "crates/hle-executor",
+  "crates/hle-verifier",
+  "crates/hle-runbook",
+  "crates/hle-bridge",
 ]
 resolver = "2"
 

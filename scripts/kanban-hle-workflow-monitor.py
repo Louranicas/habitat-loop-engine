@@ -15,6 +15,13 @@ import sys
 import time
 
 TASK_IDS = sys.argv[1:]
+if not TASK_IDS:
+    print(
+        "usage: scripts/kanban-hle-workflow-monitor.py <task-id> [<task-id> ...]",
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
 END = time.time() + 60 * 90
 LAST = None
 

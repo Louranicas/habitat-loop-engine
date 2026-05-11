@@ -1,0 +1,14 @@
+[package]
+name = "hle-core"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+# sha2 added 2026-05-11 under M0 authorization for cluster C01 Evidence Integrity (M005 receipt_hash).
+# Pinned to 0.10 (current latest stable major).
+sha2 = "0.10"
+
+[lints]
+workspace = true

@@ -12,6 +12,11 @@
       "pattern": "^[0-9a-f]{64}$",
       "type": "string"
     },
+    "receipt_sha256": {
+      "description": "SHA-256 hex digest of canonical receipt fields (workflow \\x00 step_id \\x00 verdict \\x00 state \\x00 message). Optional for backward compat with pre-Gap2 ledgers; required when --strict-sha is passed to hle verify.",
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
     "source_sha256": {
       "description": "Legacy alias retained for pre-split receipt readers; use framework_sha256 and manifest_sha256 for new scaffold receipts.",
       "pattern": "^[0-9a-f]{64}$",

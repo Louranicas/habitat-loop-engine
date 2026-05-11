@@ -108,12 +108,29 @@ This narrative audit expands the original packet with scaffold-only phases that 
 
 No runtime executor behavior, live integration, cron job, daemon, service, or deployment claim is added by these narrative changes.
 
-## Next boundary
+## Local M0 transition addendum — 2026-05-10T11:28:40Z
 
-The only implementation-enabling phrase is:
+The original workflow packet above is preserved as historical scaffold provenance. The active repository state has since broadened from scaffold-only into bounded local M0: `plan.toml` now carries `m0_runtime = true`, `scripts/quality-gate.sh --m0` runs verifier-authorized local CLI round trips, and local receipts are emitted only under `.deployment-work/runtime/`.
 
-```text
-begin M0
+The transition does not authorize live Habitat writes, cron jobs, systemd services, unbounded daemons, or final deployment claims. The current authority gates are:
+
+```bash
+scripts/quality-gate.sh --scaffold
+scripts/quality-gate.sh --m0
 ```
 
-Until then, continue docs, diagrams, reviews, planning, tests, and receipts only.
+For the directory/file review that reconciles the deployment framework, dedicated review vault, and active scaffold/M0 repository, see:
+
+```text
+docs/workflows/scaffold-m0-broadening-review-20260510T112840Z.md
+```
+
+## Next boundary
+
+The next implementation-enabling phrase is no longer scaffold/M0; local M0 is already active. The next forbidden boundary requires separate explicit authorization:
+
+```text
+authorize live Habitat integration / authorize service deployment
+```
+
+Until then, continue local-only runtime work, docs, diagrams, reviews, planning, tests, receipts, and bounded foreground helpers only.

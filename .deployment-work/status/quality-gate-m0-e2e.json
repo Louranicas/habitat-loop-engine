@@ -1,0 +1,140 @@
+{
+  "tool": "scripts/quality-gate.sh",
+  "mode": "m0",
+  "schema": "hle.quality_gate.v2",
+  "verdict": "FAIL",
+  "steps": [
+    {
+      "command": "scripts/verify-sync.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 18
+    },
+    {
+      "command": "scripts/verify-doc-links.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 32
+    },
+    {
+      "command": "scripts/verify-claude-folder.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 23
+    },
+    {
+      "command": "scripts/verify-antipattern-registry.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 5
+    },
+    {
+      "command": "scripts/verify-semantic-predicates.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-module-map.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 8
+    },
+    {
+      "command": "scripts/verify-layer-dag.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 7
+    },
+    {
+      "command": "scripts/verify-receipt-schema.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-negative-controls.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-runbook-schema.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 3
+    },
+    {
+      "command": "scripts/verify-receipt-graph.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-test-taxonomy.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 2
+    },
+    {
+      "command": "scripts/verify-bounded-logs.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-usepattern-registry.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 3
+    },
+    {
+      "command": "scripts/verify-skeleton-only.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 18
+    },
+    {
+      "command": "scripts/verify-framework-hash-freshness.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-vault-parity.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 18
+    },
+    {
+      "command": "scripts/verify-bin-wrapper-parity.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 20
+    },
+    {
+      "command": "scripts/verify-script-safety.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 27
+    },
+    {
+      "command": "scripts/verify-local-loop-helpers.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-source-topology.sh",
+      "exit_code": 0,
+      "status": "PASS",
+      "duration_ms": 19
+    },
+    {
+      "command": "scripts/verify-m0-runtime.sh",
+      "exit_code": 1,
+      "status": "FAIL",
+      "duration_ms": 18
+    }
+  ]
+}

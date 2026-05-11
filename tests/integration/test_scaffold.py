@@ -14,6 +14,10 @@ class ScaffoldIntegrationTests(unittest.TestCase):
         result = subprocess.run(["scripts/verify-negative-controls.sh"], cwd=ROOT, text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_local_loop_helper_contract_script_passes(self):
+        result = subprocess.run(["scripts/verify-local-loop-helpers.sh"], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_watcher_hardening_scripts_pass(self):
         scripts = [
             "scripts/verify-skeleton-only.sh",
@@ -25,6 +29,19 @@ class ScaffoldIntegrationTests(unittest.TestCase):
             with self.subTest(script=script):
                 result = subprocess.run([script], cwd=ROOT, text=True, capture_output=True, check=False)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_kanban_monitor_requires_task_ids_instead_of_sleeping(self):
+        result = subprocess.run(
+            ["python3", "scripts/kanban-hle-workflow-monitor.py"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=2,
+        )
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn("usage:", result.stderr)
+        self.assertNotIn("timeout reached", result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

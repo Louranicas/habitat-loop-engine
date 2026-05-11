@@ -1,0 +1,16 @@
+[package]
+name = "hle-verifier"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+# NOTE: hle-verifier does NOT depend on hle-executor.
+# This enforces UP_EXECUTOR_VERIFIER_SPLIT (HLE-UP-001) at the cargo dependency level.
+
+[dependencies]
+substrate-types = { path = "../substrate-types" }
+hle-core = { path = "../hle-core" }
+hle-storage = { path = "../hle-storage" }
+
+[lints]
+workspace = true

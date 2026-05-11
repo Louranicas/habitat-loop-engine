@@ -4,5 +4,10 @@ edition.workspace = true
 license.workspace = true
 version.workspace = true
 
+[dependencies]
+sha2 = "0.10"
+substrate-types = { path = "../substrate-types" }
+substrate-verify = { path = "../substrate-verify" }
+
 [lints]
 workspace = true
